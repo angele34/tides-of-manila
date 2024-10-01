@@ -9,7 +9,9 @@ int main() {
 
     // Displays the welcome message
     Welcome();
-    // Displays the main menu
+    // Prompts user for input
     GetInput(&player_code, &initial_capital, &target_profit);
+
+    // Displays Menu
     DisplayMenu(player_code, initial_capital, target_profit);
 }
