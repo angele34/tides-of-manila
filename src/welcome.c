@@ -21,7 +21,10 @@ void Welcome() {
     "\n");
     printf("\033[0m");
 
+    printf("\033[1;38;5;214m");
     printf("\tTo get started, please enter the following \n");
+    printf("\033[0m");
+    
     printf("\n\n");
 }
 

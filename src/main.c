@@ -14,4 +14,5 @@ int main() {
 
     // Displays Menu
     DisplayMenu(player_code, initial_capital, target_profit);
+    DisplayMainScreen(player_code, initial_capital, target_profit);
 }
