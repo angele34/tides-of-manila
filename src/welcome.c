@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../header/welcome.h" 
 
 // This function displays the welcome message
 
 void Welcome() {
+    system("cls");
     printf("\n");
 
     // Display text in gold
