@@ -26,7 +26,13 @@ void DisplayMenu(int player_code, int initial_capital, int target_profit, int cu
         printf("Navigation Screen\n\n\n");
     }
     printf("Player: %03d \t\t\t\t Gold Coins: %d\n", player_code, initial_capital);
-    printf("Location: %s \t\t\t Profit: %5d/%d%%\n", current_location, current_profit, target_profit);
+    printf("Location: ");
+    printf("\033[1;38;5;214m");
+    printf("%s", current_location);
+    printf("\033[0m");
+    printf(" \t\t\t Profit: %5d/%d%%\n", current_profit, target_profit);
+
+
     printf("Day %d\n\n\n\n", day);
 }
 
@@ -141,10 +147,17 @@ void Sell(int player_code, int initial_capital, int target_profit, int current_p
 }
 
 // Displays the navigation screen upon pressing [3] Go to Another Port
-// implement day increment
 void DisplayNavigationScreen(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]) {
-    system("cls");
-    DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Navigation");
-    
-    
+     #ifdef _WIN32
+        system("cls");
+    #endif
+    if (strcmp(current_location, "Manila") == 0) {
+        Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
+    } else if (strcmp(current_location, "Tondo") == 0) {
+        Tondo(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
+    } else if (strcmp(current_location, "Pandakan") == 0) {
+        Pandakan(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
+    } else if (strcmp(current_location, "Sapa   ") == 0) {
+        Sapa(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
+    }
 }
