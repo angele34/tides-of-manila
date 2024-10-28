@@ -1,4 +1,6 @@
 #include <stdio.h>
+
+// Import user-defined libraries
 #include "../header/welcome.h"
 #include "../header/menu.h"
 #include "../header/input.h"
@@ -16,11 +18,10 @@ int main() {
     Welcome();
     // Prompts user for input
     GetInput(&player_code, &initial_capital, &target_profit);
-
+    
     // Displays Menu
-    DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
-    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
+    DisplayMenu(player_code, initial_capital, target_profit, current_profit, &day, cargo, current_location, screen_type);
+    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, &day, cargo, current_location, screen_type);
 
-    // Displays end of game
-    End_Of_Game(target_profit, initial_capital, current_profit, day);
+    return 0;
 }

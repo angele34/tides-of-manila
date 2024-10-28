@@ -8,14 +8,14 @@
 #include "../header/location.h"
 #include "../header/menu.h"
 
-void DisplayMenu(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]);
-void DisplayMainScreen(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]);
-void Buy(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]);
-void Sell(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]);
-void DisplayNavigationScreen(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]);
+void DisplayMenu(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]);
+void DisplayMainScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]);
+void Buy(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]);
+void Sell(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]);
+void DisplayNavigationScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]);
 
 // Displays the main menu containing player data and progress
-void DisplayMenu(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]) {
+void DisplayMenu(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]) {
     if (strcmp(screen_type, "Main") == 0) {
         printf("\n\nMain Screen\n\n\n");
     } else if (strcmp(screen_type, "Purchase") == 0) {
@@ -33,11 +33,11 @@ void DisplayMenu(int player_code, int initial_capital, int target_profit, int cu
     printf(" \t\t\t Profit: %5d/%d%%\n", current_profit, target_profit);
 
 
-    printf("Day %d\n\n\n\n", day);
+    printf("Day %d\n\n\n\n", *day);
 }
 
 // Displays the main screen containing cargo and market prices
-void DisplayMainScreen(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]) {
+void DisplayMainScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]) {
     DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Main");
     
     printf("   Cargo \t%3d of 75\n", cargo);
@@ -84,7 +84,7 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
 }
 
 // Displays the buy screen upon pressing [1] Buy
-void Buy(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]) {
+void Buy(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]) {
     system("cls");
     DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Purchase");
 
@@ -115,7 +115,7 @@ void Buy(int player_code, int initial_capital, int target_profit, int current_pr
     }
 }
 
-void Sell(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]) {
+void Sell(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]) {
     system("cls");
     DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Sell");
 
@@ -147,10 +147,11 @@ void Sell(int player_code, int initial_capital, int target_profit, int current_p
 }
 
 // Displays the navigation screen upon pressing [3] Go to Another Port
-void DisplayNavigationScreen(int player_code, int initial_capital, int target_profit, int current_profit, int day, int cargo, char current_location[], char screen_type[]) {
+void DisplayNavigationScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]) {
      #ifdef _WIN32
         system("cls");
     #endif
+
     if (strcmp(current_location, "Manila") == 0) {
         Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
     } else if (strcmp(current_location, "Tondo") == 0) {
