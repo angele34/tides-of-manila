@@ -17,7 +17,6 @@ void Sapa(int player_code, int initial_capital, int target_profit, int current_p
 void Check_Turns(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[]) {
     if (*day >= 30) {
         End_Of_Game(target_profit, initial_capital, current_profit, *day);
-        exit(0);
     }
 }
 

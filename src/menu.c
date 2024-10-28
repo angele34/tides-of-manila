@@ -78,7 +78,7 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
             #endif
                 DisplayNavigationScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type);
         } else if (key == 'q' || key == 'Q') {
-            exit(0);
+            return;
         }
     }
 }
