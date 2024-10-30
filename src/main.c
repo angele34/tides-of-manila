@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 // Import user-defined libraries
 #include "../header/welcome.h"
@@ -19,9 +20,17 @@ int main() {
     // Prompts user for input
     GetInput(&player_code, &initial_capital, &target_profit);
     
-    // Displays Menu
-    DisplayMenu(player_code, initial_capital, target_profit, current_profit, &day, cargo, current_location, screen_type);
-    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, &day, cargo, current_location, screen_type);
+    bool game_state = true;
 
+    while (game_state) {
+        Check_Turns(player_code, initial_capital, target_profit, current_profit, &day, cargo, current_location, screen_type, &game_state);
+        if (game_state) {
+            // Displays Menu
+            DisplayMenu(player_code, initial_capital, target_profit, current_profit, &day, cargo, current_location, screen_type, &game_state);
+            DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, &day, cargo, current_location, screen_type, &game_state);
+        }
+    }
+
+    End_Of_Game(target_profit, initial_capital, current_profit, day);
     return 0;
 }
