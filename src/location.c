@@ -10,11 +10,11 @@
 #include "../header/end_of_game.h"
 
 int Check_Turns(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
-void Travel(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void Manila(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void Tondo(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state); 
 void Pandakan(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void Sapa(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
+void Travel(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 
 int Check_Turns(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
     int total_gold = initial_capital + current_profit;
@@ -25,8 +25,38 @@ int Check_Turns(int player_code, int initial_capital, int target_profit, int cur
     return 0;
 }
 
+void Manila(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+    strcpy(current_location, "Manila");
+    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) return;
+    (*day)++;
+    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+}
+
+void Tondo(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+    strcpy(current_location, "Tondo");
+    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) return;
+    (*day)++; 
+   DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+}
+
+void Pandakan(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+    strcpy(current_location, "Pandakan"); 
+    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) return;
+    (*day)++; 
+    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+
+}
+
+void Sapa(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+    strcpy(current_location, "Sapa   ");
+    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) return;
+    (*day)++;
+    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+}
+
 void Travel(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
-    if (strcmp(current_location, "Manila") == 0) {
+    if (strcmp(current_location, "Manila") == 0) 
+    {
         printf("Where would you like to go?\n");
         printf("%*s%s", 3, "", "[1] Tondo\n");
         printf("%*s%s", 3, "", "[2] Pandakan\n");
@@ -43,7 +73,10 @@ void Travel(int player_code, int initial_capital, int target_profit, int current
         } else if (key == 'x' || key == 'X') {
             DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
         }
-    } else if (strcmp(current_location, "Tondo") == 0) {
+    } 
+    
+    else if (strcmp(current_location, "Tondo") == 0) 
+    {
         printf("Where would you like to go?\n");
         printf("%*s%s", 3, "", "[1] Manila\n");
         printf("%*s%s", 3, "", "[2] Pandakan\n");
@@ -60,7 +93,10 @@ void Travel(int player_code, int initial_capital, int target_profit, int current
         } else if (key == 'x' || key == 'X') {
             DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
         }
-    } else if (strcmp(current_location, "Pandakan") == 0) {
+    } 
+    
+    else if (strcmp(current_location, "Pandakan") == 0) 
+    {
         printf("Where would you like to go?\n");
         printf("%*s%s", 3, "", "[1] Tondo\n");
         printf("%*s%s", 3, "", "[2] Manila\n");
@@ -77,7 +113,10 @@ void Travel(int player_code, int initial_capital, int target_profit, int current
         } else if (key == 'x' || key == 'X') {
             DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
         }
-    } else if (strcmp(current_location, "Sapa   ") == 0) {
+    } 
+    
+    else if (strcmp(current_location, "Sapa   ") == 0) 
+    {
         printf("Where would you like to go?\n");
         printf("%*s%s", 3, "", "[1] Tondo\n");
         printf("%*s%s", 3, "", "[2] Pandakan\n");
@@ -95,50 +134,4 @@ void Travel(int player_code, int initial_capital, int target_profit, int current
             DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
         }
     }
-}
-
-void Manila(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
-    strcpy(current_location, "Manila");
-    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) {
-        return;
-    }
-
-    (*day)++;
-    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-}
-
-void Tondo(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
-    strcpy(current_location, "Tondo");
-
-    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) {
-        return; 
-    }
-    
-    (*day)++; 
-   DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    
-}
-
-void Pandakan(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
-    strcpy(current_location, "Pandakan"); 
-
-    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) {
-        return; 
-    }
-
-    (*day)++; 
-    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-
-}
-
-void Sapa(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
-    strcpy(current_location, "Sapa   ");
-    
-    if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) {
-        return; 
-    }
-    
-    (*day)++;
-    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-
 }
