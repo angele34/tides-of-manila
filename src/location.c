@@ -26,7 +26,6 @@ int Check_Turns(int player_code, int initial_capital, int target_profit, int cur
 
 void Manila(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
     strcpy(current_location, "Manila");
-
     if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) {
         return;
     }

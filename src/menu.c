@@ -51,10 +51,19 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
 
     // Placeholder values
     // TODO: Implement random price generator
+
     printf("   Market Prices\n");
     printf("   =======================\n");
-    printf("   Coconut - 0   Silk - 0\n");
-    printf("   Rice    - 0   Gun  - 0\n\n\n  ");
+
+    if (strcmp(current_location, "Manila") == 0) {
+        Manila_Market(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+    } else if (strcmp(current_location, "Tondo") == 0) {
+        Tondo_Market(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+    } else if (strcmp(current_location, "Pandakan") == 0) {
+        Pandakan_Market(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+    } else if (strcmp(current_location, "Sapa   ") == 0) {
+        Sapa_Market(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+    }
 
     printf("What would you like to do?\n");
     printf("%*s%s", 4, "", "[1] Buy\n");
@@ -79,9 +88,11 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
 
 // Displays the buy screen upon pressing [1] Buy
 void Buy(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+    
     #ifdef _WIN32
         system("cls");
     #endif
+
     DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Purchase", game_state);
 
     printf("What would you like to buy?\n");
