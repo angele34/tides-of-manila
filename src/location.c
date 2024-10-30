@@ -10,6 +10,7 @@
 #include "../header/end_of_game.h"
 
 int Check_Turns(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
+void Travel(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void Manila(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void Tondo(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state); 
 void Pandakan(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
@@ -24,6 +25,78 @@ int Check_Turns(int player_code, int initial_capital, int target_profit, int cur
     return 0;
 }
 
+void Travel(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+    if (strcmp(current_location, "Manila") == 0) {
+        printf("Where would you like to go?\n");
+        printf("%*s%s", 3, "", "[1] Tondo\n");
+        printf("%*s%s", 3, "", "[2] Pandakan\n");
+        printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
+        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
+
+        char key = getch();
+        if (key == '1') {
+            Tondo(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '2') {
+            Pandakan(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '3') {
+            Sapa(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == 'x' || key == 'X') {
+            DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        }
+    } else if (strcmp(current_location, "Tondo") == 0) {
+        printf("Where would you like to go?\n");
+        printf("%*s%s", 3, "", "[1] Manila\n");
+        printf("%*s%s", 3, "", "[2] Pandakan\n");
+        printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
+        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
+
+        char key = getch();
+        if (key == '1') {
+            Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '2') {
+            Pandakan(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '3') {
+            Sapa(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == 'x' || key == 'X') {
+            DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        }
+    } else if (strcmp(current_location, "Pandakan") == 0) {
+        printf("Where would you like to go?\n");
+        printf("%*s%s", 3, "", "[1] Tondo\n");
+        printf("%*s%s", 3, "", "[2] Manila\n");
+        printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
+        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
+
+        char key = getch();
+        if (key == '1') {
+            Tondo(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '2') {
+            Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '3') {
+            Sapa(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == 'x' || key == 'X') {
+            DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        }
+    } else if (strcmp(current_location, "Sapa   ") == 0) {
+        printf("Where would you like to go?\n");
+        printf("%*s%s", 3, "", "[1] Tondo\n");
+        printf("%*s%s", 3, "", "[2] Pandakan\n");
+        printf("%*s%s", 3, "", "[3] Manila\n\n\n");
+        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
+
+        char key = getch();
+        if (key == '1') {
+            Tondo(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '2') {
+            Pandakan(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == '3') {
+            Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        } else if (key == 'x' || key == 'X') {
+            DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+        }
+    }
+}
+
 void Manila(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
     strcpy(current_location, "Manila");
     if (Check_Turns(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state)) {
@@ -31,29 +104,7 @@ void Manila(int player_code, int initial_capital, int target_profit, int current
     }
 
     (*day)++;
-
-    #ifdef _WIN32
-        system("cls");
-    #endif
-    
-    DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Navigation", game_state);
-
-    printf("Where would you like to go?\n");
-    printf("%*s%s", 3, "", "[1] Tondo\n");
-    printf("%*s%s", 3, "", "[2] Pandakan\n");
-    printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
-    printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-    char key = getch();
-    if (key == '1') {
-        Tondo(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '2') {
-        Pandakan(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '3') {
-        Sapa(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == 'x' || key == 'X') {
-        DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    }
+    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
 }
 
 void Tondo(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
@@ -64,29 +115,8 @@ void Tondo(int player_code, int initial_capital, int target_profit, int current_
     }
     
     (*day)++; 
+   DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
     
-    #ifdef _WIN32
-        system("cls");
-    #endif
-
-    DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Navigation", game_state);
-    
-    printf("Where would you like to go?\n");
-    printf("%*s%s", 3, "", "[1] Manila\n");
-    printf("%*s%s", 3, "", "[2] Pandakan\n");
-    printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
-    printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-    char key = getch();
-    if (key == '1') {
-        Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '2') {
-        Pandakan(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '3') {
-        Sapa(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == 'x' || key == 'X') {
-        DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    }
 }
 
 void Pandakan(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
@@ -97,29 +127,8 @@ void Pandakan(int player_code, int initial_capital, int target_profit, int curre
     }
 
     (*day)++; 
+    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
 
-    #ifdef _WIN32
-        system("cls");
-    #endif
-
-    DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Navigation", game_state);
-    
-    printf("Where would you like to go?\n");
-    printf("%*s%s", 3, "", "[1] Tondo\n");
-    printf("%*s%s", 3, "", "[2] Manila\n");
-    printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
-    printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-    char key = getch();
-    if (key == '1') {
-        Tondo(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '2') {
-        Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '3') {
-        Sapa(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == 'x' || key == 'X') {
-        DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    }
 }
 
 void Sapa(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
@@ -130,27 +139,6 @@ void Sapa(int player_code, int initial_capital, int target_profit, int current_p
     }
     
     (*day)++;
-    
-    #ifdef _WIN32
-        system("cls");
-    #endif
+    DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
 
-    DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Navigation", game_state);
-
-    printf("Where would you like to go?\n");
-    printf("%*s%s", 3, "", "[1] Tondo\n");
-    printf("%*s%s", 3, "", "[2] Pandakan\n");
-    printf("%*s%s", 3, "", "[3] Manila\n\n\n");
-    printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-    char key = getch();
-    if (key == '1') {
-        Tondo(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '2') {
-        Pandakan(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == '3') {
-        Manila(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    } else if (key == 'x' || key == 'X') {
-        DisplayMainScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
-    }
 }
