@@ -1,18 +1,17 @@
-#include <stdio.h>
-#include <conio.h>
-#include <stdlib.h> 
-#include <string.h>
-#include <stdbool.h>
+#include "../header/common.h"
 
 // Import user-defined libraries
 #include "../header/generate_price.h" 
 #include "../header/location.h"
 #include "../header/menu.h"
+#include "../header/trade.h"
+
+struct goods inventory = {0, 0, 0, 0};
 
 void DisplayMenu(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void DisplayMainScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
-void Buy(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
-void Sell(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
+void BuyScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
+void SellScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void DisplayNavigationScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 
 // Displays the main menu containing player data and progress
@@ -47,11 +46,11 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
 
     DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Main", game_state);
     
-    // TODO: implement item count
     printf("   Cargo \t%3d of 75\n", cargo);
     printf("   =======================\n");
-    printf("   Coconut - 0   Silk - 0\n");
-    printf("   Rice    - 0   Gun  - 0\n\n\n");
+    printf("   Coconut - %2d  Silk - %2d\n", inventory.coconut, inventory.silk);
+    printf("   Rice    - %2d  Gun  - %2d\n\n\n", inventory.rice, inventory.gun);
+
 
     // Display market prices based on location
     printf("   Market Prices\n");
@@ -75,9 +74,9 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
     while (*game_state) {
         char key = getch();
         if (key == '1') {
-            Buy(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+            BuyScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
         } else if (key == '2') {
-            Sell(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
+            SellScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
         } else if (key == '3') {
             DisplayNavigationScreen(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
         } else if (key == 'q' || key == 'Q') {
@@ -87,20 +86,22 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
 
 }
 
-// Displays the buy screen upon pressing [1] Buy
-void Buy(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+// Displays the BuyScreen screen upon pressing [1] BuyScreen
+void BuyScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
     #endif
 
     DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Purchase", game_state);
 
-    printf("What would you like to buy?\n");
+    printf("What would you like to Buy?\n");
     printf("%*s%s", 2, "", "[1] Coconut\n");
     printf("%*s%s", 2, "", "[2] Rice\n");
     printf("%*s%s", 2, "", "[3] Silk\n");
     printf("%*s%s", 2, "", "[4] Gun\n\n\n");
     printf("%*s%s", 2, "", "[X] Return to the Main Screen\n\n\n");
+
+    // TODO: Implement purchasing based on location prices
 
     while(*game_state) {
         char key = getch();
@@ -119,13 +120,13 @@ void Buy(int player_code, int initial_capital, int target_profit, int current_pr
 
 }
 
-void Sell(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
+void SellScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
     #endif
     DisplayMenu(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, "Sell", game_state);
 
-    printf("What would you like to sell?\n");
+    printf("What would you like to Sell?\n");
     printf("%*s%s", 2, "", "[1] Coconut\n");
     printf("%*s%s", 2, "", "[2] Rice\n");
     printf("%*s%s", 2, "", "[3] Silk\n");
@@ -150,7 +151,6 @@ void Sell(int player_code, int initial_capital, int target_profit, int current_p
 }
 
 // Displays the navigation screen upon pressing [3] Go to Another Port
-// TODO: Return to main screen upon going to another location
 void DisplayNavigationScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");

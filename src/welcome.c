@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "../header/common.h"
+
 #include "../header/welcome.h" 
 
 // This function displays the welcome message

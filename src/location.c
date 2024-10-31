@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <conio.h>
-#include <stdlib.h> 
-#include <string.h>
-#include <stdbool.h>
+#include "../header/common.h"
 
 // Import user-defined libraries
 #include "../header/location.h"

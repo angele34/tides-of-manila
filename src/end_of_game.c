@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "../header/common.h"
 
 // Import user-defined libraries
 #include "../header/end_of_game.h"

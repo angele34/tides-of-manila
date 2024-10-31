@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h> 
-#include <time.h>
-
+#include "../header/common.h"
 // Import user-defined libraries
 #include "../header/welcome.h"
 #include "../header/generate_price.h"
@@ -10,6 +6,7 @@
 #include "../header/input.h"
 #include "../header/end_of_game.h"
 #include "../header/location.h"
+#include "../header/trade.h"
 
 int main() {
     srand(time(0));

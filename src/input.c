@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "../header/common.h"
 #include "../header/input.h"
 
 // Takes the player data as input
