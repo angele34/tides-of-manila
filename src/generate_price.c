@@ -5,7 +5,6 @@
 
 MarketPrices prices;
 
-
 int Generate_Price(int min, int max) {
     return min + rand() % (max - min + 1);
 }
