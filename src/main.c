@@ -13,6 +13,9 @@ int main() {
     // Declare as local variables
     PlayerData player;
     PlayerProgress progress = {0, 0, 0};
+    Goods inventory = {0, 0, 0, 0};
+    MarketPrices prices;
+    Item items;
 
     char current_location[20] = "Manila";
     char screen_type[20] = "Main";
@@ -25,13 +28,13 @@ int main() {
     bool game_state = true;
 
     while (game_state) {
-        Check_Turns(&player, &progress, current_location, screen_type, &game_state);
+        Check_Turns(&player, &progress, &inventory, &prices, &items, current_location, screen_type, &game_state);
 
         // Checks if game_state is not false
         if (game_state) {
             // Displays Menu
-            DisplayMenu(&player, &progress, current_location, screen_type, &game_state);
-            DisplayMainScreen(&player, &progress, current_location, screen_type, &game_state);
+            DisplayMenu(&player, &progress, &inventory, &prices, &items, current_location, screen_type, &game_state);
+            DisplayMainScreen(&player, &progress, &inventory, &prices, &items, current_location, screen_type, &game_state);
         }
     }
 

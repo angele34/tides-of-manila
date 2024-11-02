@@ -5,16 +5,14 @@
 #include "../header/location.h"
 #include "../header/menu.h"
 
-Goods inventory = {0, 0, 0, 0};
-
-void DisplayMenu(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state);
-void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state);
-void BuyScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state);
-void SellScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state);
-void DisplayNavigationScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state);
+void DisplayMenu(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state);
+void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state);
+void BuyScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state);
+void SellScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state);
+void DisplayNavigationScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state);
 
 // Displays the main menu containing player data and progress
-void DisplayMenu(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state) {
+void DisplayMenu(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     
     // Dynamically updates the screen type
     if (strcmp(screen_type, "Main") == 0) {
@@ -38,33 +36,25 @@ void DisplayMenu(PlayerData *player, PlayerProgress *progress, char current_loca
 }
 
 // Displays the main screen containing cargo and market prices
-void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state) {
+void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
     #endif
 
-    DisplayMenu(player, progress, current_location, "Main", game_state);
+    DisplayMenu(player, progress, inventory, prices, items, current_location, "Main", game_state);
     
     printf("   Cargo \t%3d of 75\n", progress->cargo);
     printf("   =======================\n");
-    printf("   Coconut - %2d  Silk - %2d\n", inventory.coconut, inventory.silk);
-    printf("   Rice    - %2d  Gun  - %2d\n\n\n", inventory.rice, inventory.gun);
+    printf("   Coconut - %2d  Silk - %2d\n", inventory->coconut, inventory->silk);
+    printf("   Rice    - %2d  Gun  - %2d\n\n\n", inventory->rice, inventory->gun);
 
 
     // Display market prices based on location
     printf("   Market Prices\n");
     printf("   =======================\n");
-    if (strcmp(current_location, "Manila") == 0) {
-        Manila_Market();
-    } else if (strcmp(current_location, "Tondo") == 0) {
-        Tondo_Market();
-    } else if (strcmp(current_location, "Pandakan") == 0) {
-        Pandakan_Market();
-    } else if (strcmp(current_location, "Sapa   ") == 0) {
-        Sapa_Market();
-    }
+    Set_Prices(prices, current_location);
 
-    Print_Prices();
+    Print_Prices(prices);
 
     printf("What would you like to do?\n");
     printf("%*s%s", 4, "", "[1] Buy\n");
@@ -75,11 +65,11 @@ void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, char curren
     while (*game_state) {
         char key = getch();
         if (key == '1') {
-            BuyScreen(player, progress, current_location, screen_type, game_state);
+            BuyScreen(player, progress, inventory, prices, items, current_location, screen_type, game_state);
         } else if (key == '2') {
-            SellScreen(player, progress, current_location, screen_type, game_state);
+            SellScreen(player, progress, inventory, prices, items, current_location, screen_type, game_state);
         } else if (key == '3') {
-            DisplayNavigationScreen(player, progress, current_location, screen_type, game_state);
+            DisplayNavigationScreen(player, progress, inventory, prices, items, current_location, screen_type, game_state);
         } else if (key == 'q' || key == 'Q') {
             *game_state = false;
         }
@@ -88,12 +78,12 @@ void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, char curren
 }
 
 // Displays the BuyScreen screen upon pressing [1] BuyScreen
-void BuyScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state) {
+void BuyScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
     #endif
 
-    DisplayMenu(player, progress, current_location, "Purchase", game_state);
+    DisplayMenu(player, progress, inventory, prices, items, current_location, "Purchase", game_state);
 
     printf("What would you like to Buy?\n");
     printf("%*s%s", 2, "", "[1] Coconut\n");
@@ -104,28 +94,44 @@ void BuyScreen(PlayerData *player, PlayerProgress *progress, char current_locati
 
     // TODO: Implement purchasing based on location prices
 
-    while(*game_state) {
+    while (*game_state) {
+        items->quantity = 0; 
         char key = getch();
+
         if (key == '1') {
-            printf("Buying Coconut\n");
+            printf("The market price of Coconut is: %d\n", prices->coconut);
+            strcpy(items->item, "coconut");
         } else if (key == '2') {
-            printf("Buying Rice\n");
+            printf("The market price of Rice is: %d\n", prices->rice);
+            strcpy(items->item, "rice");
         } else if (key == '3') {
-            printf("Buying Silk\n");
+            printf("The market price of Silk is: %d\n", prices->silk);
+            strcpy(items->item, "silk");
         } else if (key == '4') {
-            printf("Buying Gun\n");
+            printf("The market price of Gun is: %d\n", prices->gun);
+            strcpy(items->item, "gun");
         } else if (key == 'x' || key == 'X') {
-            DisplayMainScreen(player, progress, current_location, screen_type, game_state);
+            DisplayMainScreen(player, progress, inventory, prices, items, current_location, screen_type, game_state);
+            continue;
+        }
+        
+        printf("How many would %s(s) you like to buy? ", items->item);
+        scanf("%d", &items->quantity); 
+
+        if (items->quantity > 0) {
+            Buy(player, progress, inventory, prices, items, current_location, screen_type, game_state);
+        } else {
+            printf("Please enter a valid quantity greater than 0.\n");
         }
     }
 
 }
 
-void SellScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state) {
+void SellScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
     #endif
-    DisplayMenu(player, progress, current_location, "Sell", game_state);
+    DisplayMenu(player, progress, inventory, prices, items, current_location, "Sell", game_state);
 
     printf("What would you like to Sell?\n");
     printf("%*s%s", 2, "", "[1] Coconut\n");
@@ -134,28 +140,44 @@ void SellScreen(PlayerData *player, PlayerProgress *progress, char current_locat
     printf("%*s%s", 2, "", "[4] Gun\n\n\n");
     printf("%*s%s", 2, "", "[X] Return to the Main Screen\n\n\n");
 
-    while(*game_state) {
+    while (*game_state) {
+        items->quantity = 0; 
         char key = getch();
+
         if (key == '1') {
-            printf("Selling Coconut\n");
+            printf("The market price of Coconut is: %d\n", prices->coconut);
+            strcpy(items->item, "coconut");
         } else if (key == '2') {
-            printf("Selling Rice\n");
+            printf("The market price of Rice is: %d\n", prices->rice);
+            strcpy(items->item, "rice");
         } else if (key == '3') {
-            printf("Selling Silk\n");
+            printf("The market price of Silk is: %d\n", prices->silk);
+            strcpy(items->item, "silk");
         } else if (key == '4') {
-            printf("Selling Gun\n");
+            printf("The market price of Gun is: %d\n", prices->gun);
+            strcpy(items->item, "gun");
         } else if (key == 'x' || key == 'X') {
-            DisplayMainScreen(player, progress, current_location, screen_type, game_state);
+            DisplayMainScreen(player, progress, inventory, prices, items, current_location, screen_type, game_state);
+            continue;
+        }
+        
+        printf("How many would %s(s) you like to sell? ", items->item);
+        scanf("%d", &items->quantity); 
+
+        if (items->quantity > 0) {
+            Sell(player, progress, inventory, prices, items, current_location, screen_type, game_state);
+        } else {
+            printf("Please enter a valid quantity greater than 0.\n");
         }
     }
 
 }
 
 // Displays the navigation screen upon pressing [3] Go to Another Port
-void DisplayNavigationScreen(PlayerData *player, PlayerProgress *progress, char current_location[], char screen_type[], bool *game_state) {
+void DisplayNavigationScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
     #endif
-    DisplayMenu(player, progress, current_location, "Navigation", game_state);
-    Travel(player, progress, current_location, screen_type, game_state);
+    DisplayMenu(player, progress, inventory, prices, items, current_location, "Navigation", game_state);
+    Travel(player, progress, inventory, prices, items, current_location, screen_type, game_state);
 }
