@@ -42,19 +42,8 @@ void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, Goods *inve
     #endif
 
     DisplayMenu(player, progress, inventory, prices, items, current_location, "Main", game_state);
-    
-    printf("   Cargo \t%3d of 75\n", progress->cargo);
-    printf("   =======================\n");
-    printf("   Coconut - %2d  Silk - %2d\n", inventory->coconut, inventory->silk);
-    printf("   Rice    - %2d  Gun  - %2d\n\n\n", inventory->rice, inventory->gun);
-
-
-    // Display market prices based on location
-    printf("   Market Prices\n");
-    printf("   =======================\n");
     Set_Prices(prices, current_location);
-
-    Print_Prices(prices);
+    Display_Details(player, progress, inventory, prices, items, current_location, screen_type, game_state);
 
     printf("What would you like to do?\n");
     printf("%*s%s", 4, "", "[1] Buy\n");
@@ -77,20 +66,36 @@ void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, Goods *inve
 
 }
 
+void Display_Details(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
+    printf("   Cargo \t%3d of 75\n", progress->cargo);
+    printf("   =======================\n");
+    printf("   Coconut - %2d  Silk - %2d\n", inventory->coconut, inventory->silk);
+    printf("   Rice    - %2d  Gun  - %2d\n\n\n", inventory->rice, inventory->gun);
+
+
+    // Display market prices based on location
+    printf("   Market Prices\n");
+    printf("   =======================\n");
+
+    Print_Prices(prices);
+}
+
 // Displays the BuyScreen screen upon pressing [1] BuyScreen
 void BuyScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
     #endif
-
+    
     DisplayMenu(player, progress, inventory, prices, items, current_location, "Purchase", game_state);
+    
+    Display_Details(player, progress, inventory, prices, items, current_location, screen_type, game_state);
 
     printf("What would you like to Buy?\n");
     printf("%*s%s", 2, "", "[1] Coconut\n");
     printf("%*s%s", 2, "", "[2] Rice\n");
     printf("%*s%s", 2, "", "[3] Silk\n");
     printf("%*s%s", 2, "", "[4] Gun\n\n\n");
-    printf("%*s%s", 2, "", "[X] Return to the Main Screen\n\n\n");
+    printf("%*s%s", 2, "", "[X] Return to the Main Screen\n");
 
     // TODO: Implement purchasing based on location prices
 
@@ -131,14 +136,16 @@ void SellScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, 
     #ifdef _WIN32
         system("cls");
     #endif
+
     DisplayMenu(player, progress, inventory, prices, items, current_location, "Sell", game_state);
+    Display_Details(player, progress, inventory, prices, items, current_location, screen_type, game_state);
 
     printf("What would you like to Sell?\n");
     printf("%*s%s", 2, "", "[1] Coconut\n");
     printf("%*s%s", 2, "", "[2] Rice\n");
     printf("%*s%s", 2, "", "[3] Silk\n");
     printf("%*s%s", 2, "", "[4] Gun\n\n\n");
-    printf("%*s%s", 2, "", "[X] Return to the Main Screen\n\n\n");
+    printf("%*s%s", 2, "", "[X] Return to the Main Screen\n");
 
     while (*game_state) {
         items->quantity = 0; 
