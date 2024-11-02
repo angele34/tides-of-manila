@@ -9,6 +9,18 @@
 #include <time.h>
 
 typedef struct {
+    int player_code;
+    int initial_capital;
+    int target_profit;
+} PlayerData;
+
+typedef struct {
+    int day;
+    int current_profit;
+    int cargo;
+} PlayerProgress;
+
+typedef struct {
     int coconut;
     int silk;
     int rice;
