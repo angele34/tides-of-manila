@@ -54,8 +54,6 @@ void Set_Prices(MarketPrices *prices, char current_location[]) {
 }
 
 void Buy(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
-    Set_Prices(prices, current_location);
-
     int total_cost = 0;
     if (strcmp(items->item, "coconut") == 0) {
         total_cost = items->quantity * prices->coconut;
@@ -97,7 +95,6 @@ void Buy(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketP
 }
 
 void Sell(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
-    Set_Prices(prices, current_location);
     int total_cost = 0;
     if (strcmp(items->item, "coconut") == 0) {
         total_cost = items->quantity * prices->coconut;
