@@ -6,7 +6,6 @@
 #include "../header/input.h"
 #include "../header/end_of_game.h"
 #include "../header/location.h"
-#include "../header/trade.h"
 
 int main() {
     srand(time(0));

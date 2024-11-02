@@ -4,9 +4,8 @@
 #include "../header/generate_price.h" 
 #include "../header/location.h"
 #include "../header/menu.h"
-#include "../header/trade.h"
 
-struct goods inventory = {0, 0, 0, 0};
+Goods inventory = {0, 0, 0, 0};
 
 void DisplayMenu(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
 void DisplayMainScreen(int player_code, int initial_capital, int target_profit, int current_profit, int *day, int cargo, char current_location[], char screen_type[], bool *game_state);
@@ -64,6 +63,8 @@ void DisplayMainScreen(int player_code, int initial_capital, int target_profit, 
     } else if (strcmp(current_location, "Sapa   ") == 0) {
         Sapa_Market(player_code, initial_capital, target_profit, current_profit, day, cargo, current_location, screen_type, game_state);
     }
+
+    Print_Prices();
 
     printf("What would you like to do?\n");
     printf("%*s%s", 4, "", "[1] Buy\n");
