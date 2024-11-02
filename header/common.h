@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <stdlib.h> 
 #include <time.h>
+#include <windows.h>
 
 typedef struct {
     int player_code;
@@ -27,8 +28,6 @@ typedef struct {
     int gun;
 } Goods;
 
-extern Goods inventory;
-
 typedef struct {
     int coconut;
     int rice;
@@ -36,6 +35,9 @@ typedef struct {
     int gun;
 } MarketPrices;
 
-extern MarketPrices prices;
+typedef struct {
+    int quantity;
+    char item[20];
+} Item;
 
 #endif
