@@ -29,7 +29,6 @@ void Pandakan(PlayerData *player, PlayerProgress *progress, Goods *inventory, Ma
     if (Check_Turns(player, progress, inventory, prices, items, current_location, screen_type, game_state)) return;
     (progress->day)++; 
     printf("Travel successful! Returning to Main screen...");
-    fflush(stdout);
     Sleep(2000);
     DisplayMainScreen(player, progress, inventory, prices, items, current_location, screen_type, game_state);
 

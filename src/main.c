@@ -23,23 +23,23 @@ int main() {
 
     // Displays the welcome message
     Welcome();
-    // Prompts user for input
+    // Prompts user for input before starting
     GetInput(&player);
-    
+
+    // Set initial value of game_state to true to run the game
     bool game_state = true;
 
     while (game_state) {
         Check_Turns(&player, &progress, &inventory, &prices, &items, current_location, screen_type, &game_state);
-
         // Checks if game_state is not false
         if (game_state) {
-            // Displays Menu
+            // Displays the Main Screen
             DisplayMenu(&player, &progress, &inventory, &prices, &items, current_location, screen_type, &game_state);
             DisplayMainScreen(&player, &progress, &inventory, &prices, &items, current_location, screen_type, &game_state);
         }
     }
 
-    // Display End of Game
+    // Displays End of Game
     End_Of_Game(&player, &progress);
     return 0;
 }

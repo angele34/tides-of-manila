@@ -66,11 +66,11 @@ void DisplayMainScreen(PlayerData *player, PlayerProgress *progress, Goods *inve
 }
 
 void Display_Details(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
+    // Display items in cargo
     printf("   Cargo \t%3d of 75\n", progress->cargo);
     printf("   =======================\n");
     printf("   Coconut - %2d  Silk - %2d\n", inventory->coconut, inventory->silk);
     printf("   Rice    - %2d  Gun  - %2d\n\n\n", inventory->rice, inventory->gun);
-
 
     // Display market prices based on location
     printf("   Market Prices\n");
@@ -79,7 +79,7 @@ void Display_Details(PlayerData *player, PlayerProgress *progress, Goods *invent
     Print_Prices(prices);
 }
 
-// Displays the BuyScreen screen upon pressing [1] BuyScreen
+// Displays the Buy Screen screen upon pressing [1] Buy
 void BuyScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
@@ -125,6 +125,7 @@ void BuyScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, M
 
 }
 
+// Displays the Sell screen upon pressing [2] Sell
 void SellScreen(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
     #ifdef _WIN32
         system("cls");
