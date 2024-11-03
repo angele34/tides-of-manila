@@ -40,7 +40,7 @@ void Sapa_Market(MarketPrices *prices) {
     prices->gun = Generate_Price(204, 301);
 }
 
-// TODO: Fix Market Prices updating every time the player navigates between screens
+
 void Set_Prices(MarketPrices *prices, char current_location[]) {
     if (strcmp(current_location, "Manila") == 0) {
         Manila_Market(prices);
@@ -102,6 +102,7 @@ void Sell(PlayerData *player, PlayerProgress *progress, Goods *inventory, Market
             player->initial_capital += total_cost;
             inventory->coconut -= items->quantity;
             progress->cargo -= items-> quantity;
+            progress->current_profit += total_cost;
         } else {
             printf("Sale unsuccessful, insufficient quantity of Coconut.\n Returning to Main Screen...");
         }
@@ -111,6 +112,7 @@ void Sell(PlayerData *player, PlayerProgress *progress, Goods *inventory, Market
             player->initial_capital += total_cost;
             inventory->rice -= items->quantity;
             progress->cargo -= items-> quantity;
+            progress->current_profit += total_cost;
         } else {
             printf("Sale unsuccessful, insufficient quantity of Rice.\n Returning to Main Screen...");
         }
@@ -120,6 +122,7 @@ void Sell(PlayerData *player, PlayerProgress *progress, Goods *inventory, Market
             player->initial_capital += total_cost;
             inventory->silk -= items->quantity;
             progress->cargo -= items-> quantity;
+            progress->current_profit += total_cost;
         } else {
             printf("Sale unsuccessful, insufficient quantity of Silk.\n Returning to Main Screen...");
         }
@@ -129,6 +132,7 @@ void Sell(PlayerData *player, PlayerProgress *progress, Goods *inventory, Market
             player->initial_capital += total_cost;
             inventory->gun -= items->quantity;
             progress->cargo -= items-> quantity;
+            progress->current_profit += total_cost;
         } else {
             printf("Sale unsuccessful, insufficient quantity of Gun.\n Returning to Main Screen...");
         }
