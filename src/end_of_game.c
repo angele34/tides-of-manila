@@ -3,20 +3,20 @@
 // Import user-defined libraries
 #include "../header/end_of_game.h"
 
-void End_Of_Game(PlayerData *player, PlayerProgress *progress) {
-    int total_gold = player->initial_capital + progress->current_profit;
+void End_Of_Game(int player_data[], int player_progress[]) {
+    int total_gold = player_data[1] + player_progress[1];
     
     #ifdef _WIN32
-    system("cls");
+        system("cls");
     #endif
     
-    if (progress->day >= 30 && total_gold < player->target_profit + player->initial_capital) {
+    if (player_progress[0] >= 30 && total_gold < player_data[2] + player_data[1]) {
         printf("You Lose :( \n\n");
-    } else if (total_gold >= player->target_profit + player->initial_capital) {
+    } else if (total_gold >= player_data[2] + player_data[1]) {
         printf("You Win!\n\n");
     }
     
     printf("Total Gold %d\n", total_gold);
-    printf("Profit %d\n", progress->current_profit);
-    printf("Number of turns %d\n\n\n", progress->day);
+    printf("Profit %d\n", player_progress[1]);
+    printf("Number of turns %d\n\n\n", player_progress[0]);
 }

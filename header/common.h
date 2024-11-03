@@ -9,35 +9,32 @@
 #include <time.h>
 #include <windows.h>
 
-typedef struct {
-    int player_code;
-    int initial_capital;
-    int target_profit;
-} PlayerData;
+/* 
+player_data[0]: player_code, 
+player_data[1]: initial_capital, 
+player_data[2]: target_profit
+*/
 
-typedef struct {
-    int day;
-    int current_profit;
-    int cargo;
-} PlayerProgress;
+/* 
+player_progress[0]: day,
+player_progress[1]: current_profit,
+player_progress[2]: cargo
+*/ 
 
-typedef struct {
-    int coconut;
-    int silk;
-    int rice;
-    int gun;
-} Goods;
+/*
+inventory [0]: coconut,
+inventory [1]: silk,
+inventory [2]: rice,
+inventory [3]: gun
+*/
 
-typedef struct {
-    int coconut;
-    int rice;
-    int silk;
-    int gun;
-} MarketPrices;
 
-typedef struct {
-    int quantity;
-    char item[20];
-} Item;
+/*
+market_prices[0]: coconut,
+market_prices[1]: silk,
+market_prices[2]: rice,
+market_prices[3]: gun
+*/
+
 
 #endif
