@@ -2,125 +2,78 @@
 
 // Import user-defined libraries
 #include "../header/location.h"
+#include "../header/generate_price.h"
 #include "../header/menu.h"
 #include "../header/end_of_game.h"
 #include "../header/check_turns.h"
 
-void Manila(int player_data[], int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state) {
-    strcpy(current_location, "Manila");
-    if (Check_Turns(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state)) return;
-    (player_progress[0])++;
-    printf("Travel successful! Returning to Main screen...");
-    Sleep(2000);
-    DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-}
+int Travel (int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *navigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity) {
+    // Check if game is still running
+    if (Check_Turns(nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bGame_state)) return 1;
 
-void Tondo(int player_data[], int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state) {
-    strcpy(current_location, "Tondo");
-    if (Check_Turns(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state)) return;
-    (player_progress[0])++; 
-    printf("Travel successful! Returning to Main screen...");
-    Sleep(2000);
-    DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-}
-
-void Pandakan(int player_data[], int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state) {
-    strcpy(current_location, "Pandakan"); 
-    if (Check_Turns(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state)) return;
-    (player_progress[0])++; 
-    printf("Travel successful! Returning to Main screen...");
-    Sleep(2000);
-    DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-
-}
-
-void Sapa(int player_data[], int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state) {
-    strcpy(current_location, "Sapa   ");
-    if (Check_Turns(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state)) return;
-    (player_progress[0])++;
-    printf("Travel successful! Returning to Main screen...");
-    Sleep(2000);
-    DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-}
-
-void Travel(int player_data[], int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state) {
-    if (strcmp(current_location, "Manila") == 0) 
-    {
-        printf("Where would you like to go?\n");
-        printf("%*s%s", 3, "", "[1] Tondo\n");
-        printf("%*s%s", 3, "", "[2] Pandakan\n");
-        printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
-        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-        char key = getch();
-        if (key == '1') {
-            Tondo(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '2') {
-            Pandakan(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '3') {
-            Sapa(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == 'x' || key == 'X') {
-            DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        }
-    } 
-    
-    else if (strcmp(current_location, "Tondo") == 0) 
-    {
-        printf("Where would you like to go?\n");
-        printf("%*s%s", 3, "", "[1] Manila\n");
-        printf("%*s%s", 3, "", "[2] Pandakan\n");
-        printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
-        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-        char key = getch();
-        if (key == '1') {
-            Manila(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '2') {
-            Pandakan(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '3') {
-            Sapa(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == 'x' || key == 'X') {
-            DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        }
-    } 
-    
-    else if (strcmp(current_location, "Pandakan") == 0) 
-    {
-        printf("Where would you like to go?\n");
-        printf("%*s%s", 3, "", "[1] Tondo\n");
-        printf("%*s%s", 3, "", "[2] Manila\n");
-        printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
-        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-        char key = getch();
-        if (key == '1') {
-            Tondo(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '2') {
-            Manila(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '3') {
-            Sapa(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == 'x' || key == 'X') {
-            DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        }
-    } 
-    
-    else if (strcmp(current_location, "Sapa   ") == 0) 
-    {
-        printf("Where would you like to go?\n");
-        printf("%*s%s", 3, "", "[1] Tondo\n");
-        printf("%*s%s", 3, "", "[2] Pandakan\n");
-        printf("%*s%s", 3, "", "[3] Manila\n\n\n");
-        printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
-
-        char key = getch();
-        if (key == '1') {
-            Tondo(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '2') {
-            Pandakan(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == '3') {
-            Manila(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        } else if (key == 'x' || key == 'X') {
-            DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-        }
+    // Display options for navigation
+    printf("Where would you like to go?\n");
+    switch(*nCurrent_Loc) {
+        case 1: // Manila
+            printf("%*s%s", 3, "", "[1] Tondo\n");
+            printf("%*s%s", 3, "", "[2] Pandakan\n");
+            printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
+            break;
+        case 2: // Tondo:
+            printf("%*s%s", 3, "", "[1] Manila\n");
+            printf("%*s%s", 3, "", "[2] Pandakan\n");
+            printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
+            break;
+        case 3: // Pandakan
+            printf("%*s%s", 3, "", "[1] Tondo\n");
+            printf("%*s%s", 3, "", "[2] Manila\n");
+            printf("%*s%s", 3, "", "[3] Sapa\n\n\n");
+            break;
+        case 4: // Sapa:
+            printf("%*s%s", 3, "", "[1] Tondo\n");
+            printf("%*s%s", 3, "", "[2] Pandakan\n");
+            printf("%*s%s", 3, "", "[3] Manila\n\n\n");
+            break;
     }
+
+    printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
+
+    char key = getch();
+    switch(*nCurrent_Loc) {
+        case 1:
+            if (key == '1') { *nCurrent_Loc = 2; *navigated = true; } 
+            else if (key == '2') { *nCurrent_Loc = 3; *navigated = true; }
+            else if (key == '3') { *nCurrent_Loc = 4; *navigated = true; }
+            break;
+        case 2:
+            if (key == '1') { *nCurrent_Loc = 1; *navigated = true; }
+            else if (key == '2') { *nCurrent_Loc = 3; *navigated = true; }
+            else if (key == '3') { *nCurrent_Loc = 4;*navigated = true; }
+            break;
+        case 3: 
+            if (key == '1') { *nCurrent_Loc = 2; *navigated = true; }
+            else if (key == '2') { *nCurrent_Loc = 1; *navigated = true; }
+            else if (key == '3') { *nCurrent_Loc = 4; *navigated = true; }
+            break;
+        case 4: 
+            if (key == '1') { *nCurrent_Loc = 2; *navigated = true; }
+            else if (key == '2') { *nCurrent_Loc = 3; *navigated = true; }
+            else if (key == '3') { *nCurrent_Loc = 1; *navigated = true; }
+            break;
+    }
+
+    if (*navigated) {
+        (*nDay)++;
+        printf("Travel successful! Returning to Main screen...");
+        Sleep(2000);
+        *navigated = false; 
+        Set_Prices(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity);
+        
+    } else if (key == 'x' || key == 'X') {
+        printf("Travel unsuccessful! Returning to Main screen...");
+        Sleep(2000); 
+        Set_Prices(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity);
+        
+    }
+   return 0;
 }

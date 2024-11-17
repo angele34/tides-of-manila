@@ -1,6 +1,6 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-void GetInput(int player_data[]);
+void GetInput(int *nPlayer_code, int *nInitial_capital, int *nTarget_profit);
 
 #endif

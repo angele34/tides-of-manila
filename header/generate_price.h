@@ -2,14 +2,8 @@
 #define GENERATE_PRICE_H
 
 int Generate_Price(int min, int max);
-
-void Print_Prices(int market_prices[]);
-void Tondo_Market(int market_prices[]);
-void Manila_Market(int market_prices[]);
-void Pandakan_Market(int market_prices[]);
-void Sapa_Market(int market_prices[]);
-void Set_Prices(int market_prices[], char current_location[]);
-void Buy(int player_data[],int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state);
-void Sell(int player_data[],int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state);
+void Set_Prices(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *navigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity);
+void Buy(int *nQuantity, int *nPrice, int *nInitial_capital, int *nGoods, int *nCargo);
+void Sell(int *nQuantity, int *nPrice, int *nInitial_capital, int *nGoods, int *nCargo);
 
 #endif

@@ -7,136 +7,140 @@ int Generate_Price(int min, int max) {
     return min + rand() % (max - min + 1);
 }
 
-void Print_Prices(int market_prices[]) {
-    printf("   Coconut - %2d  Silk - %2d\n", market_prices[0], market_prices[1]);
-    printf("   Rice    - %2d  Gun  - %2d\n\n\n", market_prices[2], market_prices[3]);
-}
+void Set_Prices(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *navigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity) 
+{
+    #ifdef _WIN32
+        system("cls");
+    #endif
+    *nScreen_type = 1;
+    
+    int nCoconut_price, nSilk_price, nRice_price, nGun_price;
 
-void Tondo_Market(int market_prices[]) {
-    market_prices[0] = Generate_Price(4, 24);
-    market_prices[1] = Generate_Price(1, 20);
-    market_prices[2] = Generate_Price(48, 68);
-    market_prices[3] = Generate_Price(70, 95);
-}
+    // Randomly generate prices everytime the user travels to another port
+    if (!*navigated) {
+        switch(*nCurrent_Loc) {
+            case 1: // Manila
+                nCoconut_price = Generate_Price(3, 18);
+                nSilk_price = Generate_Price(5, 20);
+                nRice_price = Generate_Price(24, 39);
+                nGun_price = Generate_Price(65, 84);
+                break;
+            case 2: // Tondo:
+                nCoconut_price = Generate_Price(4, 24);
+                nSilk_price = Generate_Price(1, 20);
+                nRice_price = Generate_Price(48, 68);
+                nGun_price = Generate_Price(70, 95);
+                break;
+            case 3: // Pandakan
+                nCoconut_price = Generate_Price(2, 12);
+                nSilk_price = Generate_Price(4, 14);
+                nRice_price = Generate_Price(22, 32);
+                nGun_price = Generate_Price(90, 103);
+                break;
+            case 4: // Sapa:
+                nCoconut_price = Generate_Price(9, 14);
+                nSilk_price = Generate_Price(1, 6);
+                nRice_price = Generate_Price(17, 22);
+                nGun_price = Generate_Price(204, 301);
+                break;
+        }
+    }
 
-void Manila_Market(int market_prices[]) {
-    market_prices[0] = Generate_Price(3, 18);
-    market_prices[1] = Generate_Price(5, 20);
-    market_prices[2] = Generate_Price(24, 39);
-    market_prices[3] = Generate_Price(65, 84);
-}
+    // Display options
+    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type);
 
-void Pandakan_Market(int market_prices[]) {
-    market_prices[0] = Generate_Price(2, 12);
-    market_prices[1] = Generate_Price(4, 14);
-    market_prices[2] = Generate_Price(22, 32);
-    market_prices[3] = Generate_Price(90, 103);
-}
+    printf("What would you like to do?\n");
+    printf("%*s%s", 4, "", "[1] Buy\n");
+    printf("%*s%s", 4, "", "[2] Sell\n");
+    printf("%*s%s", 4, "", "[3] Go to Another Port\n\n");
+    printf("%*s%s", 4, "", "[Q] Quit\n\n\n");
 
-void Sapa_Market(int market_prices[]) {
-    market_prices[0] = Generate_Price(9, 14);
-    market_prices[1] = Generate_Price(1, 6);
-    market_prices[2] = Generate_Price(17, 22);
-    market_prices[3] = Generate_Price(204, 301);
-}
+     // Display items in cargo
+    printf("   Cargo \t%3d of 75\n", *nCargo);
+    printf("   =======================\n");
+    printf("   Coconut - %2d  Silk - %2d\n", *nCoconut, *nSilk);
+    printf("   Rice    - %2d  Gun  - %2d\n\n\n", *nRice, *nGun);
 
+    // Display market prices based on location
+    printf("   Market Prices\n");
+    printf("   =======================\n");
+    printf("   Coconut - %2d  Silk - %2d\n", nCoconut_price, nSilk_price);
+    printf("   Rice    - %2d  Gun  - %2d\n\n\n", nRice_price, nGun_price);
 
-void Set_Prices(int market_prices[], char current_location[]) {
-    if (strcmp(current_location, "Manila") == 0) {
-        Manila_Market(market_prices);
-    } else if (strcmp(current_location, "Tondo") == 0) {
-        Tondo_Market(market_prices);
-    } else if (strcmp(current_location, "Pandakan") == 0) {
-        Pandakan_Market(market_prices);
-    } else if (strcmp(current_location, "Sapa   ") == 0) {
-        Sapa_Market(market_prices);
+    // Handle the user key press input while the game is still running
+    while (*bGame_state) {
+        char key = getch();
+        switch(key) {
+            case '1':
+                BuyScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity);
+                switch (*nItem) 
+                {
+                    case 1: // Coconut
+                        Buy(nQuantity, &nCoconut_price, nInitial_capital, nCoconut, nCargo);
+                        break;
+                    case 2: // Silk
+                        Buy(nQuantity, &nSilk_price, nInitial_capital, nSilk, nCargo);
+                        break;
+                    case 3: // Rice
+                        Buy(nQuantity, &nRice_price, nInitial_capital, nRice, nCargo);
+                        break;
+                    case 4: // Gun
+                        Buy(nQuantity, &nGun_price, nInitial_capital, nGun, nCargo);
+                        break; 
+                } 
+                break;
+            case '2':
+                SellScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut, nSilk, nRice, nGun, nItem, nQuantity);
+                switch (*nItem) 
+                {
+                    case 1: // Coconut
+                        Sell(nQuantity, &nCoconut_price, nInitial_capital, nCoconut, nCargo);
+                        break;
+                    case 2: // Silk
+                        Sell(nQuantity, &nSilk_price, nInitial_capital, nSilk, nCargo);
+                        break;
+                    case 3: // Rice
+                        Sell(nQuantity, &nRice_price, nInitial_capital, nRice, nCargo);
+                        break;
+                    case 4: // Gun
+                        Sell(nQuantity, &nGun_price, nInitial_capital, nGun, nCargo);
+                        break; 
+                } 
+                break;
+            case '3':
+                DisplayNavigationScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity);
+                break;
+            case 'q': 
+            case 'Q':
+                *bGame_state = false;  
+                break;
+        }
     }
 }
 
-void Buy(int player_data[],int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state) {
-    int total_cost = 0;
-    if (strcmp(item_name, "coconut") == 0) {
-        total_cost = *quantity * market_prices[0];
-    } else if (strcmp(item_name, "silk") == 0) {
-        total_cost = *quantity * market_prices[1];
-    } else if (strcmp(item_name, "rice") == 0) {
-        total_cost = *quantity * market_prices[2];
-    }  else if (strcmp(item_name, "gun") == 0) {
-        total_cost = *quantity * market_prices[3];
-    } 
+void Buy(int *nQuantity, int *nPrice, int *nInitial_capital, int *nGoods, int *nCargo) {
+    int nTotal = *nQuantity * (*nPrice);
+    
+    if (*nInitial_capital >= nTotal && *nCargo + *nQuantity <= 75) {
+        *nInitial_capital -= nTotal;
+        *nCargo += *nQuantity;
+        *nGoods += *nQuantity;
+    } else if (*nCargo + *nQuantity > 75) {
+        printf("Purchase unsuccessful, cargo full.");
+    } else if (*nInitial_capital < nTotal) {
+        printf("Purchase unsuccessful, insufficient capital");
+    }
+}
 
-    if (player_data[1] >= total_cost && player_progress[2] <= 75) {
-        player_progress[2] += *quantity;
-        player_data[1] -= total_cost;
-        printf("Purchase successful! Returning to Main Screen...\n");
+void Sell(int *nQuantity, int *nPrice, int *nInitial_capital, int *nGoods, int *nCargo) {
+    int nTotal = *nQuantity * (*nPrice);
 
-        // Update quantity of the items in Player inventory
-        if (strcmp(item_name, "coconut") == 0) {
-            inventory[0] += *quantity;
-        } else if (strcmp(item_name, "silk") == 0) {
-            inventory[1] += *quantity;
-        } else if (strcmp(item_name, "rice") == 0) {
-            inventory[2] += *quantity;
-        } else if (strcmp(item_name, "gun") == 0) {
-            inventory[3] += *quantity;
-        } 
-
+    if (*nGoods < *nQuantity) {
+        printf("Sale unsuccessful, insufficient quantity.\n");
     } else {
-        if (player_progress[2] > 75) {
-            printf("Purchase unsuccessful, cargo full.");
-        } else if (player_data[1] < total_cost) {
-            printf("Purchase unsuccessful, insufficient capital");
-        }
-        printf("Returning to Main Screen...");
-        
+        printf("Sale successful!");
+        *nCargo -= *nQuantity;
+        *nGoods -= *nQuantity;
+        *nInitial_capital += nTotal;
     }
-    Sleep(2000);
-    DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
-}
-
-void Sell(int player_data[],int player_progress[], int inventory[], int market_prices[], int *quantity, char current_location[], char screen_type[], char item_name[], bool *game_state) {
-    int total_cost = 0;
-    if (strcmp(item_name, "coconut") == 0) {
-        total_cost = *quantity * market_prices[0];
-        if (inventory[0] >= *quantity) {
-            player_data[1] += total_cost;
-            inventory[0] -= *quantity;
-            player_progress[2] -= *quantity;
-            player_progress[1] += total_cost;
-        } else {
-            printf("Sale unsuccessful, insufficient quantity of Coconut.\n Returning to Main Screen...");
-        }
-    } else if (strcmp(item_name, "silk") == 0) {
-        total_cost = *quantity * market_prices[1];
-        if (inventory[1]>= *quantity) {
-            player_data[1] += total_cost;
-            inventory[1] -= *quantity;
-            player_progress[2] -= *quantity;
-            player_progress[1] += total_cost;
-        } else {
-            printf("Sale unsuccessful, insufficient quantity of Silk.\n Returning to Main Screen...");
-        }
-    } else if (strcmp(item_name, "rice") == 0) {
-        total_cost = *quantity * market_prices[2];
-        if (inventory[2] >= *quantity) {
-            player_data[1] += total_cost;
-            inventory[2] -= *quantity;
-            player_progress[2] -= *quantity;
-            player_progress[1] += total_cost;
-        } else {
-            printf("Sale unsuccessful, insufficient quantity of Rice.\n Returning to Main Screen...");
-        }
-    } else if (strcmp(item_name, "gun") == 0) {
-        total_cost = *quantity * market_prices[3];
-        if (inventory[3] >= *quantity) {
-            player_data[1] += total_cost;
-            inventory[3] -= *quantity;
-            player_progress[2] -= *quantity;
-            player_progress[1] += total_cost;
-        } else {
-            printf("Sale unsuccessful, insufficient quantity of Gun.\n Returning to Main Screen...");
-        }
-    }
-    Sleep(2000);
-    DisplayMainScreen(player_data, player_progress, inventory, market_prices, quantity, current_location, screen_type, item_name, game_state);
 }
