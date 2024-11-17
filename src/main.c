@@ -18,7 +18,13 @@ int main() {
     // Player inventory
     int nCoconut = 0, nSilk = 0, nRice = 0, nGun = 0;
 
-    int nQuantity = 0, nItem = 1;
+    int nQuantity = 0, nItem = 0;
+
+    // Starting port: Manila, initially generated the prices, current location, and screen type (Main Screen)
+    int nCoconut_price = Generate_Price(3, 18);
+    int nRice_price = Generate_Price(5, 20);
+    int nSilk_price = Generate_Price(24, 39);
+    int nGun_price = Generate_Price(65, 84);
 
     int nCurrent_Loc = 1;
     int nScreen_type = 1;
@@ -39,7 +45,7 @@ int main() {
         if (bGame_state) {
             // Displays the Main Screen and Menu containing Player stats
             // DisplayMenu(nPlayer_code, &nInitial_capital, nTarget_profit, &nDay, &nCurrent_profit, &nCargo, &nCurrent_Loc, &nScreen_type);
-            Set_Prices(nPlayer_code, &nInitial_capital, nTarget_profit, &nDay, &nCurrent_profit, &navigated, &bGame_state, &nCurrent_Loc, &nScreen_type, &nCargo, &nCoconut, &nSilk, &nRice, &nGun, &nItem, &nQuantity);
+            Main_Screen(nPlayer_code, &nInitial_capital, nTarget_profit, &nDay, &nCurrent_profit, &navigated, &bGame_state, &nCurrent_Loc, &nScreen_type, &nCargo, &nCoconut, &nSilk, &nRice, &nGun, &nItem, &nQuantity, &nCoconut_price, &nSilk_price, &nRice_price, &nGun_price);
         }
     }
 
