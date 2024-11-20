@@ -3,7 +3,7 @@
 // Import user-defined libraries
 #include "../header/end_of_game.h"
 
-void End_Of_Game(int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit) {
+void End_Of_Game(int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, int nCash) {
     int total_gold = *nInitial_capital + *nCurrent_profit;
     
     #ifdef _WIN32

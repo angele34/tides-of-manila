@@ -6,10 +6,22 @@
 #include "../header/menu.h"
 #include "../header/check_turns.h"
 
-// Displays the main menu containing player data and progress
-// @param = 
-void DisplayMenu(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, int *nCargo, int *nCurrent_Loc, int *nScreen_type)
+// @param total = 8
+/*
+This function displays the data and current progress of the player throughout the game
+Precondition: Game has not yet ended
+@param nPlayer_code is the code inputted by the player at the beginning of the game
+@param nInitial_capital is the amount of gold coins the player initially inputted and starts with
+@param nTarget_profit is the amount of profit set by the player and one of the goals to reach to win the game
+@param nDay increments once the player travels to another port
+@param nCurrent_profit displays the current profit the player has gained through selling goods
+@param nCargo is the overall amount of goods the player has bought
+@param nScreen_type labelled from 1-4 is used to keep track on which Screen the user is in, dynamically displaying it
+@return None
+*/
+void DisplayMenu(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, int *nCargo, int *nCurrent_Loc, int *nScreen_type, int nCash)
 {
+    
      switch(*nScreen_type) {
         case 1:
             printf("Main Screen\n\n\n");
@@ -43,18 +55,51 @@ void DisplayMenu(int nPlayer_code, int *nInitial_capital, int nTarget_profit, in
             break;
     }
     printf("\033[0m");
+    // nCurrent_profit = cashonhand - initial_Capital
+    *nCurrent_profit = *nInitial_capital - nCash;
     printf(" \t\t\t Profit: %5d/%d%%\n", *nCurrent_profit, nTarget_profit);
     printf("Day %d\n\n\n\n", *nDay);
 }
 
-void Main_Screen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *navigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price) 
+// @param total = 20
+/*
+This function displays the default screen upon starting the game, displaying options for the player to choose
+Precondition: Game has not yet ended
+@param nPlayer_code is the code inputted by the player at the beginning of the game
+@param nInitial_capital is the amount of gold coins the player initially inputted and starts with
+@param nTarget_profit is the amount of profit set by the player and one of the goals to reach to win the game
+@param nDay increments once the player travels to another port
+@param nCurrent_profit displays the current profit the player has gained through selling goods
+@param bNavigated checks if the player has successfully travelled to another port
+@param bGame_state checks if the game has not yet ended
+@param nScreen_type ranges from 1-4 is used to keep track on which Screen the user is in, dynamically displaying it
+@param nCargo is the overall amount of goods the player has bought
+@param nCoconut shows the amount of Coconut the player currently has in cargo
+@param nSilk shows the amount of Silk the player currently has in cargo
+@param nRice shows the amount of Rice the player currently has in cargo
+@param nGun shows the amount of Gun the player currently has in cargo
+@param nItem ranges 1-4 is used to keep track of the item player is buying/selling
+@param nQuantity takes the quantity the player wants to buy/sell
+@param nCoconut_price stores a randomly generated value from Generate_Price based on the current location
+@param nSilk_price stores a randomly generated value from Generate_Price based on the current location
+@param nRice_price stores a randomly generated value from Generate_Price based on the current location
+@param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@return None
+*/
+void Main_Screen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, 
+bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, 
+int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price,
+int *nRice_price, int *nGun_price, int nCash) 
 {
+    if (Check_Turns(nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bGame_state)) return;
+
     #ifdef _WIN32
         system("cls");
     #endif
     
+    // Sets the screen type
     *nScreen_type = 1;
-    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type);
+    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
 
     printf("What would you like to do?\n");
     printf("%*s%s", 4, "", "[1] Buy\n");
@@ -69,13 +114,13 @@ void Main_Screen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, in
         char key = getch();
         switch(key) {
             case '1':
-                BuyScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                BuyScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                 break;
             case '2':
-                SellScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut, nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                SellScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut, nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                 break;
             case '3':
-                DisplayNavigationScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                DisplayNavigationScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                 break;
             case 'q': 
             case 'Q':
@@ -84,15 +129,37 @@ void Main_Screen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, in
         }
     }
 }
-
-// Displays the Buy Screen screen upon pressing [1] Buy
-
-void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *navigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price) {
+// @param total = 20
+/*
+This function displays Buy Screen screen upon pressing [1] Buy
+Precondition: Game has not yet ended
+@param nPlayer_code is the code inputted by the player at the beginning of the game
+@param nInitial_capital is the amount of gold coins the player initially inputted and starts with
+@param nTarget_profit is the amount of profit set by the player and one of the goals to reach to win the game
+@param nDay increments once the player travels to another port
+@param nCurrent_profit displays the current profit the player has gained through selling goods
+@param bNavigated checks if the player has successfully travelled to another port
+@param bGame_state checks if the game has not yet ended
+@param nScreen_type ranges from 1-4 is used to keep track on which Screen the user is in, dynamically displaying it
+@param nCargo is the overall amount of goods the player has bought
+@param nCoconut shows the amount of Coconut the player currently has in cargo
+@param nSilk shows the amount of Silk the player currently has in cargo
+@param nRice shows the amount of Rice the player currently has in cargo
+@param nGun shows the amount of Gun the player currently has in cargo
+@param nItem ranges 1-4 is used to keep track of the item player is buying/selling
+@param nQuantity takes the quantity the player wants to buy/sell
+@param nCoconut_price stores a randomly generated value from Generate_Price based on the current location
+@param nSilk_price stores a randomly generated value from Generate_Price based on the current location
+@param nRice_price stores a randomly generated value from Generate_Price based on the current location
+@param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@return None
+*/
+void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
     *nScreen_type = 2;
     #ifdef _WIN32
         system("cls");
     #endif
-    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type);
+    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
     Print_Inventory(nCargo, nCoconut, nSilk, nRice, nGun, nCoconut_price, nSilk_price, nRice_price, nGun_price);
 
     printf("What would you like to Buy?\n");
@@ -125,8 +192,8 @@ void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int 
                 break;
             case 'x':
             case 'X':
-                Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
-                return;
+                Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
+                break;
         }
         scanf("%d", nQuantity);
         if (*nQuantity > 0) {
@@ -134,34 +201,58 @@ void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int 
                 {
                     case 1: // Coconut
                         Buy(nQuantity, nCoconut_price, nInitial_capital, nCoconut, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break;
                     case 2: // Silk
-                        Buy(nQuantity, nSilk_price, nInitial_capital, nSilk, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Buy(nQuantity, nRice_price, nInitial_capital, nRice, nCargo);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break;
                     case 3: // Rice
-                        Buy(nQuantity, nRice_price, nInitial_capital, nRice, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Buy(nQuantity, nSilk_price, nInitial_capital, nSilk, nCargo);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break;
                     case 4: // Gun
                         Buy(nQuantity, nGun_price, nInitial_capital, nGun, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break; 
                 } 
             }
     }
 }
 
+// @param total = 20
+/*
+This function displays Sell Screen screen upon pressing [2] Buy
+Precondition: Game has not yet ended
+@param nPlayer_code is the code inputted by the player at the beginning of the game
+@param nInitial_capital is the amount of gold coins the player initially inputted and starts with
+@param nTarget_profit is the amount of profit set by the player and one of the goals to reach to win the game
+@param nDay increments once the player travels to another port
+@param nCurrent_profit displays the current profit the player has gained through selling goods
+@param bNavigated checks if the player has successfully travelled to another port
+@param bGame_state checks if the game has not yet ended
+@param nScreen_type ranges from 1-4 is used to keep track on which Screen the user is in, dynamically displaying it
+@param nCargo is the overall amount of goods the player has bought
+@param nCoconut shows the amount of Coconut the player currently has in cargo
+@param nSilk shows the amount of Silk the player currently has in cargo
+@param nRice shows the amount of Rice the player currently has in cargo
+@param nGun shows the amount of Gun the player currently has in cargo
+@param nItem ranges 1-4 is used to keep track of the item player is buying/selling
+@param nQuantity takes the quantity the player wants to buy/sell
+@param nCoconut_price stores a randomly generated value from Generate_Price based on the current location
+@param nSilk_price stores a randomly generated value from Generate_Price based on the current location
+@param nRice_price stores a randomly generated value from Generate_Price based on the current location
+@param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@return None
+*/
 
-
-void SellScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *navigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price) {
+void SellScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
     *nScreen_type = 3;
     #ifdef _WIN32
         system("cls");
     #endif
 
-    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type);
+    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
     Print_Inventory(nCargo, nCoconut, nSilk, nRice, nGun, nCoconut_price, nSilk_price, nRice_price, nGun_price);
 
     printf("What would you like to Sell?\n");
@@ -194,47 +285,66 @@ void SellScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int
                 break;
             case 'x':
             case 'X':
-                Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut, nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut, nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                 return;
         }
         scanf("%d", nQuantity); 
-        // if i move this here, id have to take prices as parameters
         if (*nQuantity > 0) {
-            
             switch (*nItem) 
                 {
                     case 1: // Coconut
                         Sell(nQuantity, nCoconut_price, nInitial_capital, nCoconut, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break;
                     case 2: // Silk
-                        Sell(nQuantity, nSilk_price, nInitial_capital, nSilk, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Sell(nQuantity, nRice_price, nInitial_capital, nRice, nCargo);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break;
                     case 3: // Rice
-                        Sell(nQuantity, nRice_price, nInitial_capital, nRice, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Sell(nQuantity, nSilk_price, nInitial_capital, nSilk, nCargo);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break;
                     case 4: // Gun
                         Sell(nQuantity, nGun_price, nInitial_capital, nGun, nCargo);
-                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+                        Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                         break; 
                 } 
         }
     }
-    Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
 }
-
-
-
-// Displays the navigation screen upon pressing [3] Go to Another Port
-void DisplayNavigationScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *navigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price) {
+ 
+// @param total = 20
+/*
+This function displays Navigation screen upon pressing [3] Go to Another Port
+Precondition: Game has not yet ended
+@param nPlayer_code is the code inputted by the player at the beginning of the game
+@param nInitial_capital is the amount of gold coins the player initially inputted and starts with
+@param nTarget_profit is the amount of profit set by the player and one of the goals to reach to win the game
+@param nDay increments once the player travels to another port
+@param nCurrent_profit displays the current profit the player has gained through selling goods
+@param bNavigated checks if the player has successfully travelled to another port
+@param bGame_state checks if the game has not yet ended
+@param nScreen_type ranges from 1-4 is used to keep track on which Screen the user is in, dynamically displaying it
+@param nCargo is the overall amount of goods the player has bought
+@param nCoconut shows the amount of Coconut the player currently has in cargo
+@param nSilk shows the amount of Silk the player currently has in cargo
+@param nRice shows the amount of Rice the player currently has in cargo
+@param nGun shows the amount of Gun the player currently has in cargo
+@param nItem ranges 1-4 is used to keep track of the item player is buying/selling
+@param nQuantity takes the quantity the player wants to buy/sell
+@param nCoconut_price stores a randomly generated value from Generate_Price based on the current location
+@param nSilk_price stores a randomly generated value from Generate_Price based on the current location
+@param nRice_price stores a randomly generated value from Generate_Price based on the current location
+@param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@return None
+*/
+void DisplayNavigationScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
     *nScreen_type = 4;
 
     #ifdef _WIN32
         system("cls");
     #endif
 
-    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type);
-    Travel(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, navigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price);
+    DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
+    Travel(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
 }
