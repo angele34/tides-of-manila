@@ -1,11 +1,12 @@
 #include "../header/common.h"
 #include "../header/check_turns.h"
 
-int Check_Turns(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state) {
-    int total_gold = player->initial_capital + progress->current_profit;
-    if (progress->day >= 30 || total_gold >= player->target_profit + player->initial_capital) {
-        *game_state = false;
+int Check_Turns(int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bGame_state) {
+    int total_gold = *nInitial_capital + *nCurrent_profit;
+    if (*nDay >= 30 || total_gold >= nTarget_profit + *nInitial_capital) {
+        *bGame_state = false;
         return 1;
     }
     return 0;
 }
+

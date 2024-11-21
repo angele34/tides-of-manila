@@ -2,21 +2,23 @@
 
 // Import user-defined libraries
 #include "../header/end_of_game.h"
+#include "../header/clear_screen.h"
 
-void End_Of_Game(PlayerData *player, PlayerProgress *progress) {
-    int total_gold = player->initial_capital + progress->current_profit;
+/*
+This function displays the End of Game based on conditions
+*/
+
+void End_Of_Game(int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, int nCash) {
+    Clear();
+    int total_gold = *nInitial_capital + *nCurrent_profit;
     
-    #ifdef _WIN32
-    system("cls");
-    #endif
-    
-    if (progress->day >= 30 && total_gold < player->target_profit + player->initial_capital) {
+    if (*nDay >= 30 && total_gold < nTarget_profit + *nInitial_capital) {
         printf("You Lose :( \n\n");
-    } else if (total_gold >= player->target_profit + player->initial_capital) {
+    } else if (total_gold >= nTarget_profit + *nInitial_capital) {
         printf("You Win!\n\n");
     }
     
     printf("Total Gold %d\n", total_gold);
-    printf("Profit %d\n", progress->current_profit);
-    printf("Number of turns %d\n\n\n", progress->day);
+    printf("Profit %d\n", *nCurrent_profit);
+    printf("Number of turns %d\n\n\n", *nDay);
 }

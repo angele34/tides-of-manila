@@ -3,21 +3,21 @@
 
 // Takes the player data as input
 
-void GetInput(PlayerData *player) {
+void GetInput(int *nPlayer_code, int *nInitial_capital, int *nTarget_profit) {
     do {
         printf("Player code: ");
-        scanf("%d", &player->player_code);
-    } while (player->player_code > 999);
+        scanf("%d", nPlayer_code);
+    } while (*nPlayer_code > 999);
 
     do {
         printf("Gold coins: ");
-        scanf("%d", &player->initial_capital); 
-    } while (player->initial_capital <= 0);
+        scanf("%d", nInitial_capital); 
+    } while (*nInitial_capital <= 0);
 
-    int profit_percentage = player->initial_capital * 0.2;
+    int profit_percentage = *nInitial_capital * 0.2;
     
     do {
         printf("Target profit percentage: ");
-        scanf("%d", &player->target_profit);
-    } while (player->target_profit < profit_percentage);
+        scanf("%d", nTarget_profit);
+    } while (*nTarget_profit < profit_percentage);
 }

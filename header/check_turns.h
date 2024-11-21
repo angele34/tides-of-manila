@@ -1,6 +1,6 @@
 #ifndef CHECK_TURNS_H
 #define CHECK_TURNS_H
 
-int Check_Turns(PlayerData *player, PlayerProgress *progress, Goods *inventory, MarketPrices *prices, Item *items, char current_location[], char screen_type[], bool *game_state);
+int Check_Turns(int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bGame_state);
 
 #endif

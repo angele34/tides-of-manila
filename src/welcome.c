@@ -1,12 +1,12 @@
 #include "../header/common.h"
 
 #include "../header/welcome.h" 
+#include "../header/clear_screen.h"
 
 // This function displays the welcome message
 
 void Welcome() {
-    system("cls");
-    printf("\n");
+    Clear();
 
     // Display text in gold
     printf("\033[1;38;5;214m");
