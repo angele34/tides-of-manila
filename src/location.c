@@ -29,12 +29,13 @@ Precondition: Game has not yet ended
 @param nSilk_price stores a randomly generated value from Generate_Price based on the current location
 @param nRice_price stores a randomly generated value from Generate_Price based on the current location
 @param nGun_price stores a randomly generated value from Generate_Price based on the current location
-@return
+@param nCash is the value of the initial capital entered by the player used to calculate the profit 
+@return 
 */
 
-int Travel (int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
+void Travel (int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
     // Check if game is still running
-    if (Check_Turns(nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bGame_state)) return 1;
+    if (Check_Turns(nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bGame_state)) return;
 
     // Display options for navigation
     printf("Where would you like to go?\n");
@@ -63,7 +64,8 @@ int Travel (int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nD
 
     printf("%*s%s", 3, "", "[X] Return to the Main Screen\n\n\n");
 
-    char key = getch();
+    char key;
+    scanf(" %c", &key);
     switch(*nCurrent_Loc) {
         case 1:
             if (key == '1') { *nCurrent_Loc = 2; *bNavigated = true; } 
@@ -125,5 +127,4 @@ int Travel (int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nD
         Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
         
     }
-   return 0;
 }

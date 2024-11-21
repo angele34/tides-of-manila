@@ -5,6 +5,7 @@
 #include "../header/location.h"
 #include "../header/menu.h"
 #include "../header/check_turns.h"
+#include "../header/clear_screen.h"
 
 // @param total = 8
 /*
@@ -17,11 +18,11 @@ Precondition: Game has not yet ended
 @param nCurrent_profit displays the current profit the player has gained through selling goods
 @param nCargo is the overall amount of goods the player has bought
 @param nScreen_type labelled from 1-4 is used to keep track on which Screen the user is in, dynamically displaying it
+@param nCash is the value of the initial capital entered by the player used to calculate the profit 
 @return None
 */
 void DisplayMenu(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, int *nCargo, int *nCurrent_Loc, int *nScreen_type, int nCash)
 {
-    
      switch(*nScreen_type) {
         case 1:
             printf("Main Screen\n\n\n");
@@ -84,6 +85,7 @@ Precondition: Game has not yet ended
 @param nSilk_price stores a randomly generated value from Generate_Price based on the current location
 @param nRice_price stores a randomly generated value from Generate_Price based on the current location
 @param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@param nCash is the value of the initial capital entered by the player used to calculate the profit 
 @return None
 */
 void Main_Screen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, 
@@ -91,12 +93,8 @@ bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *
 int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price,
 int *nRice_price, int *nGun_price, int nCash) 
 {
+    Clear();
     if (Check_Turns(nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bGame_state)) return;
-
-    #ifdef _WIN32
-        system("cls");
-    #endif
-    
     // Sets the screen type
     *nScreen_type = 1;
     DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
@@ -111,7 +109,8 @@ int *nRice_price, int *nGun_price, int nCash)
 
     // Handle the user key press input while the game is still running
     while (*bGame_state) {
-        char key = getch();
+        char key;
+        scanf("%c", &key);
         switch(key) {
             case '1':
                 BuyScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
@@ -152,9 +151,11 @@ Precondition: Game has not yet ended
 @param nSilk_price stores a randomly generated value from Generate_Price based on the current location
 @param nRice_price stores a randomly generated value from Generate_Price based on the current location
 @param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@param nCash is the value of the initial capital entered by the player used to calculate the profit 
 @return None
 */
 void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
+    Clear();
     *nScreen_type = 2;
     #ifdef _WIN32
         system("cls");
@@ -171,7 +172,8 @@ void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int 
 
     while (*bGame_state) {
         *nQuantity = 0; 
-        char key = getch(); 
+        char key;
+        scanf(" %c", &key);
 
         switch (key) {
             case '1':
@@ -243,14 +245,13 @@ Precondition: Game has not yet ended
 @param nSilk_price stores a randomly generated value from Generate_Price based on the current location
 @param nRice_price stores a randomly generated value from Generate_Price based on the current location
 @param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@param nCash is the value of the initial capital entered by the player used to calculate the profit 
 @return None
 */
 
 void SellScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
+    Clear();
     *nScreen_type = 3;
-    #ifdef _WIN32
-        system("cls");
-    #endif
 
     DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
     Print_Inventory(nCargo, nCoconut, nSilk, nRice, nGun, nCoconut_price, nSilk_price, nRice_price, nGun_price);
@@ -264,7 +265,8 @@ void SellScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int
 
     while (*bGame_state) {
         *nQuantity = 0; 
-        char key = getch();
+        char key;
+        scanf(" %c", &key);
 
         switch (key) {
             case '1':
@@ -336,15 +338,12 @@ Precondition: Game has not yet ended
 @param nSilk_price stores a randomly generated value from Generate_Price based on the current location
 @param nRice_price stores a randomly generated value from Generate_Price based on the current location
 @param nGun_price stores a randomly generated value from Generate_Price based on the current location
+@param nCash is the value of the initial capital entered by the player used to calculate the profit 
 @return None
 */
 void DisplayNavigationScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
+    Clear();
     *nScreen_type = 4;
-
-    #ifdef _WIN32
-        system("cls");
-    #endif
-
     DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
     Travel(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
 }

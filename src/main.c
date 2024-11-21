@@ -7,6 +7,7 @@
 #include "../header/check_turns.h"
 #include "../header/menu.h"
 #include "../header/welcome.h"
+#include "../header/clear_screen.h"
 
 int main() {
     // Randomize seed

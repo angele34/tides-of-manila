@@ -2,13 +2,15 @@
 
 // Import user-defined libraries
 #include "../header/end_of_game.h"
+#include "../header/clear_screen.h"
+
+/*
+This function displays the End of Game based on conditions
+*/
 
 void End_Of_Game(int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, int nCash) {
+    Clear();
     int total_gold = *nInitial_capital + *nCurrent_profit;
-    
-    #ifdef _WIN32
-        system("cls");
-    #endif
     
     if (*nDay >= 30 && total_gold < nTarget_profit + *nInitial_capital) {
         printf("You Lose :( \n\n");
