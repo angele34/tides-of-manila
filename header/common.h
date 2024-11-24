@@ -5,6 +5,5 @@
 #include <stdbool.h>
 #include <stdlib.h> 
 #include <time.h>
-#include <windows.h>
 
 #endif
