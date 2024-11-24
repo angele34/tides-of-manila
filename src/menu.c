@@ -56,9 +56,8 @@ void DisplayMenu(int nPlayer_code, int *nInitial_capital, int nTarget_profit, in
             break;
     }
     printf("\033[0m");
-    // nCurrent_profit = cashonhand - initial_Capital
     *nCurrent_profit = *nInitial_capital - nCash;
-    printf(" \t\t\t Profit: %5d/%d%%\n", *nCurrent_profit, nTarget_profit);
+    printf(" \t\t\t Profit: %5d/%d%%\n", *nInitial_capital, *nCurrent_profit);
     printf("Day %d\n\n\n\n", *nDay);
 }
 
@@ -94,10 +93,10 @@ int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_pri
 int *nRice_price, int *nGun_price, int nCash) 
 {
     Clear();
-    if (Check_Turns(nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bGame_state)) return;
     // Sets the screen type
     *nScreen_type = 1;
     DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
+    if (Check_Turns(nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bGame_state)) return;
 
     printf("What would you like to do?\n");
     printf("%*s%s", 4, "", "[1] Buy\n");
@@ -107,11 +106,16 @@ int *nRice_price, int *nGun_price, int nCash)
 
     Print_Inventory(nCargo, nCoconut, nSilk, nRice, nGun, nCoconut_price, nSilk_price, nRice_price, nGun_price);
 
-    // Handle the user key press input while the game is still running
+    // Handle the user cKey press input while the game is still running
     while (*bGame_state) {
-        char key;
-        scanf("%c", &key);
-        switch(key) {
+        char cKey;
+        do {
+            scanf(" %c", &cKey);
+            if (cKey != '1' && cKey != '2' && cKey != '3' && cKey != 'q' && cKey != 'Q') {
+                printf("Please enter a valid key\n");
+            }
+        } while (cKey != '1' && cKey != '2' && cKey != '3' && cKey != 'q' && cKey != 'Q');
+        switch(cKey) {
             case '1':
                 BuyScreen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut,nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
                 break;
@@ -157,9 +161,6 @@ Precondition: Game has not yet ended
 void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, bool *bNavigated, bool *bGame_state, int *nCurrent_Loc, int *nScreen_type, int *nCargo, int *nCoconut, int *nSilk, int *nRice, int *nGun, int *nItem, int *nQuantity, int *nCoconut_price, int *nSilk_price, int *nRice_price, int *nGun_price, int nCash) {
     Clear();
     *nScreen_type = 2;
-    #ifdef _WIN32
-        system("cls");
-    #endif
     DisplayMenu(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, nCargo, nCurrent_Loc, nScreen_type, nCash);
     Print_Inventory(nCargo, nCoconut, nSilk, nRice, nGun, nCoconut_price, nSilk_price, nRice_price, nGun_price);
 
@@ -172,10 +173,15 @@ void BuyScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int 
 
     while (*bGame_state) {
         *nQuantity = 0; 
-        char key;
-        scanf(" %c", &key);
+        char cKey;
+        do {
+            scanf(" %c", &cKey);
+            if (cKey != '1' && cKey != '2' && cKey != '3' && cKey != '4' && cKey != 'x' && cKey != 'X') {
+                printf("Please enter a valid key\n");
+            }
+        } while (cKey != '1' && cKey != '2' && cKey != '3' && cKey != '4' && cKey != 'x' && cKey != 'X');
 
-        switch (key) {
+        switch (cKey) {
             case '1':
                 *nItem = 1;  // Coconut
                 printf("How many Coconut(s) would you like to buy? ");
@@ -265,10 +271,15 @@ void SellScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int
 
     while (*bGame_state) {
         *nQuantity = 0; 
-        char key;
-        scanf(" %c", &key);
+        char cKey;
+        do {
+            scanf(" %c", &cKey);
+            if (cKey != '1' && cKey != '2' && cKey != '3' && cKey != '4' && cKey != 'x' && cKey != 'X') {
+                printf("Please enter a valid key\n");
+            }
+        } while (cKey != '1' && cKey != '2' && cKey != '3' && cKey != '4' && cKey != 'x' && cKey != 'X');
 
-        switch (key) {
+        switch (cKey) {
             case '1':
                 *nItem = 1;  // Coconut
                 printf("How many Coconut(s) would you like to sell? ");
@@ -288,7 +299,7 @@ void SellScreen(int nPlayer_code, int *nInitial_capital, int nTarget_profit, int
             case 'x':
             case 'X':
                 Main_Screen(nPlayer_code, nInitial_capital, nTarget_profit, nDay, nCurrent_profit, bNavigated, bGame_state, nCurrent_Loc, nScreen_type, nCargo, nCoconut, nSilk, nRice, nGun, nItem, nQuantity, nCoconut_price, nSilk_price, nRice_price, nGun_price, nCash);
-                return;
+                break;
         }
         scanf("%d", nQuantity); 
         if (*nQuantity > 0) {

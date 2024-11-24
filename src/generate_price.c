@@ -5,13 +5,15 @@
 
 /*
 This function randomly generates prices
-@param min
-@param max
+@param min takes the minimum number to be generated when the function is called
+@param max takes the maximum number to be generated when the function is called
+@return randomly generated value ranging from min to max
 */
 
 int Generate_Price(int min, int max) {
     return min + rand() % (max - min + 1);
 }
+
 /*
 This function displays the items in cargo and the market prices of the products
 @param nCargo is the overall amount of goods the player has bought
@@ -55,16 +57,13 @@ void Buy(int *nQuantity, int *nPrice, int *nInitial_capital, int *nGoods, int *n
         *nCargo += *nQuantity;
         *nGoods += *nQuantity;
         printf("Purchase successful! Returning to Main Screen...\n");
-        Sleep(2000); 
     } else if (*nCargo + *nQuantity > 75) {
         printf("Purchase unsuccessful, cargo full. Returning to Main Screen...\n");
     } else if (*nInitial_capital < nTotal) {
         printf("Purchase unsuccessful, insufficient capital. Returning to Main Screen...\n");
-        Sleep(2000); 
     }
 }
 
-// TODO: fix calculate profit
 /*
 This function handles the selling logic
 @param nQuantity takes the quantity the player wants to buy/sell
@@ -78,12 +77,10 @@ void Sell(int *nQuantity, int *nPrice, int *nInitial_capital, int *nGoods, int *
     int nTotal = *nQuantity * (*nPrice);
     if (*nGoods < *nQuantity) {
         printf("Sale unsuccessful, insufficient quantity. Returning to Main Screen...\n");
-        Sleep(2000); 
     } else {
         *nCargo -= *nQuantity;
         *nGoods -= *nQuantity;
         *nInitial_capital += nTotal;
         printf("Sale successful! Returning to Main Screen...");
-        Sleep(2000); 
     }
 }

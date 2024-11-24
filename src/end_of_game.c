@@ -5,20 +5,22 @@
 #include "../header/clear_screen.h"
 
 /*
-This function displays the End of Game based on conditions
+This function displays the End of Game and decides whether the player has won or lost
+@param nInitial_capital is the amount of gold coins the player initially inputted and starts with
+@param nTarget_profit is the amount of profit set by the player and one of the goals to reach to win the game
+@param nDay increments once the player travels to another port
+@param nCash is the value of the initial capital entered by the player used to calculate the profit 
+@return None
 */
 
 void End_Of_Game(int *nInitial_capital, int nTarget_profit, int *nDay, int *nCurrent_profit, int nCash) {
     Clear();
-    int total_gold = *nInitial_capital + *nCurrent_profit;
-    
-    if (*nDay >= 30 && total_gold < nTarget_profit + *nInitial_capital) {
+    if (*nDay >= 30 && *nInitial_capital < nTarget_profit + *nInitial_capital) {
         printf("You Lose :( \n\n");
-    } else if (total_gold >= nTarget_profit + *nInitial_capital) {
+    } else if (*nInitial_capital + *nCurrent_profit >= nTarget_profit + *nInitial_capital) {
         printf("You Win!\n\n");
     }
-    
-    printf("Total Gold %d\n", total_gold);
+    printf("Total Gold %d\n", *nInitial_capital);
     printf("Profit %d\n", *nCurrent_profit);
     printf("Number of turns %d\n\n\n", *nDay);
 }
