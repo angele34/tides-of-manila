@@ -1,6 +1,8 @@
-# Tides of Manila
+<h1 align="center"> Tides of Manila </h1>
 
-*Tides of Manila* is a turn-based strategy game built using C, created as a Machine Project for CCPROG1.
+<div align="center">
+  <em>Tides of Manila</em> is a turn-based strategy game built using C, created as a Machine Project for CCPROG1.
+</div> <br>
 
 ## Installation
 
